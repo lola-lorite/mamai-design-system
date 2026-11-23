@@ -1,0 +1,704 @@
+<title>My New Role</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: a studio worksheet. Thin marker rail, one 64ch reading column,
+   a citation band at the foot of every card, real ticks you can mark off. */
+:root{
+  --paper:#EDF0ED; --card:#FFFFFF; --ink:#16201C; --muted:#5C6A62;
+  --line:#D5DCD6; --go:#1E6B58; --go-soft:#E2EDE8; --signal:#8A6420; --signal-soft:#F3EBDA;
+  --font-display:"Bricolage Grotesque",ui-serif,Georgia,serif;
+  --font-body:"Inter",ui-sans-serif,-apple-system,"Segoe UI",system-ui,sans-serif;
+  --font-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#101512; --card:#18201C; --ink:#E7EDE8; --muted:#9BA8A0;
+    --line:#2A332D; --go:#63C3A6; --go-soft:#16281F; --signal:#D4AC63; --signal-soft:#2A2113;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#101512; --card:#18201C; --ink:#E7EDE8; --muted:#9BA8A0;
+  --line:#2A332D; --go:#63C3A6; --go-soft:#16281F; --signal:#D4AC63; --signal-soft:#2A2113;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:var(--font-body); font-size:16px; line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+.shell{
+  max-width:900px; margin:0 auto;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:24px 128px;
+}
+h1,h2,h3{font-family:var(--font-display);font-weight:700;letter-spacing:-.015em;margin:0 0 .5em;text-wrap:balance}
+h1{font-size:clamp(30px,5.4vw,50px);line-height:1.08}
+h2{font-size:clamp(23px,3.8vw,34px);line-height:1.16}
+h3{font-size:17px;letter-spacing:-.005em;margin:0 0 6px}
+p{margin:0 0 1em;max-width:64ch}
+a{color:var(--go);text-decoration-thickness:1px;text-underline-offset:2px}
+ul{padding-left:1.15em;margin:0 0 1em;max-width:64ch}
+li{margin:.4em 0}
+strong{font-weight:600}
+em{font-style:italic}
+
+.slide{display:none;background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.slide.on{display:block;animation:rise .26s ease}
+@keyframes rise{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+.body{padding:clamp(22px,4.2vw,46px)}
+.rail{display:flex;align-items:center;gap:10px;margin:0 0 18px}
+.marker{font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;color:var(--go);background:var(--go-soft);padding:4px 9px;border-radius:5px;white-space:nowrap}
+.rule{flex:1;height:1px;background:var(--line);min-width:0}
+.lead{font-size:clamp(17px,2.1vw,19.5px);color:var(--muted);max-width:58ch}
+
+.grid{display:grid;gap:13px;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));margin:0 0 1.1em}
+.box{background:var(--paper);border:1px solid var(--line);border-radius:11px;padding:15px;min-width:0}
+.box p{font-size:14.2px;color:var(--muted);margin:0;max-width:none}
+.box p+p{margin-top:.6em}
+
+.stat{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));margin:0 0 1.2em}
+.stat div{background:var(--paper);border:1px solid var(--line);border-radius:11px;padding:14px 15px;min-width:0}
+.stat b{display:block;font-family:var(--font-display);font-size:30px;line-height:1.05;color:var(--go);font-variant-numeric:tabular-nums}
+.stat span{display:block;font-size:13px;color:var(--muted);margin-top:4px}
+
+.pull{font-family:var(--font-display);font-size:clamp(20px,2.9vw,27px);line-height:1.3;max-width:26ch;margin:0 0 1em;letter-spacing:-.015em}
+.quoteline{border-left:2px solid var(--go);padding:2px 0 2px 15px;margin:0 0 1.1em;max-width:62ch}
+.quoteline p{margin:0;font-style:italic}
+.quoteline cite{display:block;font-style:normal;font-size:13px;color:var(--muted);margin-top:4px}
+
+.flag{display:inline-block;font-family:var(--font-mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;padding:3px 8px;border-radius:99px;margin-bottom:9px}
+.f-go{background:var(--go-soft);color:var(--go)}
+.f-wait{background:var(--signal-soft);color:var(--signal)}
+.asked{background:var(--signal-soft);border:1px solid var(--line);border-left:3px solid var(--signal);border-radius:9px;padding:13px 15px;margin:0 0 1.2em}
+.asked p{margin:0;font-size:14.5px}
+.asked .who{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--signal);display:block;margin-bottom:5px}
+
+table{border-collapse:collapse;width:100%;font-size:14px;margin:0 0 1em}
+.scroll{overflow-x:auto;margin:0 0 1em}
+.scroll table{margin:0}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500}
+td.w{font-family:var(--font-mono);color:var(--go);white-space:nowrap}
+td.h{font-family:var(--font-mono);color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+code{font-family:var(--font-mono);font-size:13.2px;background:var(--paper);padding:1px 5px;border-radius:4px}
+pre{font-family:var(--font-mono);font-size:12.8px;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:14px;overflow-x:auto;line-height:1.55;margin:0 0 1em}
+pre code{background:none;padding:0}
+
+.ticks{list-style:none;padding:0;margin:0 0 1.1em;max-width:64ch}
+.ticks li{margin:0;border-bottom:1px solid var(--line)}
+.ticks li:last-child{border-bottom:0}
+.tick{display:flex;gap:12px;align-items:flex-start;padding:11px 2px;cursor:pointer}
+.tick input{appearance:none;flex:0 0 auto;width:20px;height:20px;margin:1px 0 0;border:1.5px solid var(--line);border-radius:5px;background:var(--card);cursor:pointer;position:relative;transition:.15s}
+.tick input:checked{background:var(--go);border-color:var(--go)}
+.tick input:checked::after{content:"";position:absolute;left:5.5px;top:2px;width:6px;height:11px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(42deg)}
+.tick input:focus-visible{outline:2px solid var(--go);outline-offset:2px}
+.tick span{min-width:0}
+.tick .mins{font-family:var(--font-mono);font-size:11.5px;color:var(--muted);margin-left:6px;white-space:nowrap}
+.tick input:checked+span{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--line)}
+
+.meter{margin:0 0 1.1em}
+.meter .track{height:7px;background:var(--paper);border:1px solid var(--line);border-radius:99px;overflow:hidden}
+.meter .fill{height:100%;background:var(--go);width:0;transition:width .35s ease}
+.meter .say{font-size:13.5px;color:var(--muted);margin-top:8px;font-variant-numeric:tabular-nums}
+.meter .say b{color:var(--go);font-weight:600}
+
+.src{border-top:1px solid var(--line);background:var(--paper);padding:13px clamp(22px,4.2vw,46px)}
+.src h4{font-family:var(--font-mono);font-size:10px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);margin:0 0 6px;font-weight:500}
+.src ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:3px;max-width:none}
+.src li{margin:0;font-size:12.8px;line-height:1.45}
+.src .note{color:var(--muted)}
+
+.notes{border-top:1px solid var(--line);padding:16px clamp(22px,4.2vw,46px) 20px}
+.notes label{display:block;font-family:var(--font-mono);font-size:10.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
+.notes textarea{width:100%;min-height:86px;resize:vertical;background:var(--paper);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:11px 13px;font-family:var(--font-body);font-size:14.8px;line-height:1.55}
+.notes textarea:focus{outline:2px solid var(--go);outline-offset:1px;border-color:transparent}
+.notes .state{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.07em;color:var(--muted);margin-top:6px;min-height:14px}
+
+.bar{
+  position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);
+  display:flex;align-items:center;gap:11px;justify-content:center;flex-wrap:wrap;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-top:10px;padding-bottom:calc(10px + env(safe-area-inset-bottom,0px));
+  z-index:20;
+}
+button{font-family:var(--font-body);font-size:14px;padding:8px 15px;border-radius:99px;border:1px solid var(--line);background:var(--paper);color:var(--ink);cursor:pointer}
+button:hover:not(:disabled){border-color:var(--go);color:var(--go)}
+button:disabled{opacity:.4;cursor:default}
+button.go{background:var(--go);color:#fff;border-color:var(--go)}
+button.go:hover{opacity:.9;color:#fff}
+.count{font-family:var(--font-mono);font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums;min-width:62px;text-align:center}
+.dots{display:flex;gap:5px;flex-wrap:wrap;justify-content:center}
+.dot{width:8px;height:8px;border-radius:99px;background:var(--line);border:0;padding:0;cursor:pointer;transition:.15s}
+.dot.on{background:var(--go);transform:scale(1.35)}
+.dot.has{background:var(--signal)}
+@media (max-width:680px){.dots{display:none}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="shell" id="shell">
+
+<section class="slide on" data-k="s-open">
+  <div class="body">
+    <div class="rail"><span class="marker">THE PLAN</span><span class="rule"></span></div>
+    <h1>My new role</h1>
+    <p class="lead">Eight weeks. One real thing built. Four subjects you can name out loud to a client — and the data to back up why they matter.</p>
+    <div class="grid" style="margin-top:26px">
+      <div class="box"><h3>Move</h3><p>Arrow keys, or the buttons below.</p></div>
+      <div class="box"><h3>Write</h3><p>Every slide has a notes box. It saves properly this time — and I can read it, so ask me things in there.</p></div>
+      <div class="box"><h3>Tick</h3><p>The week 0 list has real checkboxes. Your progress is kept.</p></div>
+    </div>
+    <p style="font-size:14px;color:var(--muted)">Your five notes from the first draft are already in here, each on the slide you wrote it on, with my answer on that slide.</p>
+  </div>
+</section>
+
+<section class="slide" data-k="s-data">
+  <div class="body">
+    <div class="rail"><span class="marker">THE EVIDENCE</span><span class="rule"></span></div>
+    <h2>Not my opinion — 900 designers'</h2>
+    <div class="asked">
+      <span class="who">You asked</span>
+      <p>"I want to know what designers, PMs, POs, big people on the design and AI field are saying NOW, they know more than you."</p>
+    </div>
+    <p>Fair. So here is the biggest current survey: <strong>the AI in Design Report 2026</strong>, run by Designer Fund with Foundation Capital — over 900 designers across startups, enterprises and agencies, 60+ countries, plus 20+ leader interviews. Published 6 October 2026.</p>
+    <div class="stat">
+      <div><b>50%</b><span>have pushed AI-generated code to production</span></div>
+      <div><b>20%</b><span>call themselves design engineers</span></div>
+      <div><b>76%</b><span>use an AI coding tool</span></div>
+      <div><b>~80%</b><span>say AI assists but does not replace their judgment</span></div>
+    </div>
+    <p>Read those first two together, because they are the whole answer to your fear: <strong>half of designers now ship code, and only a fifth took the new job title.</strong> You do not have to become a design engineer. You have to stop being locked out of the delivery.</p>
+    <p class="pull" style="color:var(--go)">And the finding that matters most to you: designers who code or prototype with AI were twice as likely to feel more creative and capable.</p>
+    <p>Not less. Twice as likely to feel <em>more</em>. They also reported a higher quality bar, not a lower one.</p>
+  </div>
+  <div class="src"><h4>Sources</h4><ul>
+    <li><a href="https://stateofaidesign.com/">AI in Design Report 2026</a> — Designer Fund + Foundation Capital, 6 Oct 2026, 900+ designers. <a href="https://stateofaidesign.com/chapters/craft">Craft chapter</a>.</li>
+    <li class="note">Caveat worth knowing: Anthropic is a report partner and several quoted voices work there. The percentages come from the survey, not from them.</li>
+  </ul></div>
+</section>
+
+<section class="slide" data-k="s-spec">
+  <div class="body">
+    <div class="rail"><span class="marker">THE ONE IDEA</span><span class="rule"></span></div>
+    <h2>Spec-driven design</h2>
+    <p>Of everything you sent me, this is the only piece that changes what you do on Monday. Tuomas Härkönen at Futurice, August 2026. His argument:</p>
+    <div class="quoteline"><p>Agents can turn clear intent into working code. So writing clear intent is the bottleneck now — and that is a designer's job.</p><cite>Paraphrased from "Faster prototypes miss the point"</cite></div>
+    <p>So the deliverable moves. Not the mockup. <strong>The spec</strong>: a plain text file, kept with the code, saying what to build, why, how you would know it worked, and what you deliberately rejected.</p>
+    <p>He also names the trap precisely — mockups show the happy path and hide the edge cases, the error states and the data rules. <em>That is the gap the design engineer walked into on your project.</em> Not better pixels. A fuller answer.</p>
+    <div class="grid">
+      <div class="box"><h3>What he says designers keep</h3><p>Discovery and research. Framing the problem. Owning the open questions. Judging meaning, ethics and usability.</p></div>
+      <div class="box"><h3>What moves to agents</h3><p>Pixel conformance. Token conformance. Checking the build matches the standards.</p></div>
+    </div>
+    <p style="font-size:14px;color:var(--muted)">Honest note on the source: it is a consultancy blog post, and he admits his evidence is thin — "my early tests are showing promising gains," with no numbers. The <em>idea</em> is solid and matches the survey data. Treat his claimed results as unproven.</p>
+  </div>
+  <div class="src"><h4>Sources</h4><ul>
+    <li><a href="https://www.futurice.com/blog/spec-driven-design">Faster prototypes miss the point: the case for spec-driven design</a> — Tuomas Härkönen, Futurice, 11 Aug 2026.</li>
+    <li><a href="https://www.smashingmagazine.com/2026/04/production-ready-becomes-design-deliverable-ux/">The UX Designer's Nightmare</a> — Carrie Webster, Smashing Magazine, Apr 2026. The counter-argument: she thinks the design engineer model produces people "averagely competent" at both. Worth reading as the other side.</li>
+  </ul></div>
+</section>
+
+<section class="slide" data-k="s-dsincode">
+  <div class="body">
+    <div class="rail"><span class="marker">YOUR BIGGEST GAP</span><span class="rule"></span></div>
+    <h2>Design systems in code, in one slide</h2>
+    <div class="asked">
+      <span class="who">You asked</span>
+      <p>"I need to know more about how design systems connect with code, I feel I don't know much about that. What are the basics that I need to know?"</p>
+    </div>
+    <p>There are only five moving parts, and you already understand the first one better than most engineers do.</p>
+    <div class="scroll"><table>
+      <thead><tr><th>Part</th><th>What it is</th><th>In plain words</th></tr></thead>
+      <tbody>
+        <tr><td class="w">1. Tokens</td><td>A JSON file of your decisions</td><td>Your palette, spacing, type scale and radii, written as data instead of as a Figma style. <code>color.text.primary</code>, <code>space.4</code>.</td></tr>
+        <tr><td class="w">2. The build</td><td>Style Dictionary</td><td>A small program that reads your token file and spits out CSS, iOS and Android versions. You configure it once; you don't write it.</td></tr>
+        <tr><td class="w">3. Components</td><td>Code that consumes tokens</td><td>A button whose colour is <code>var(--color-text-primary)</code>, never <code>#16201C</code>. That's the whole discipline.</td></tr>
+        <tr><td class="w">4. The showroom</td><td>Storybook</td><td>A web page listing every component in every state, so people can see and test them without opening the app.</td></tr>
+        <tr><td class="w">5. The delivery</td><td>An npm package</td><td>The system gets a version number and products install it. A change you make can be released, or held back.</td></tr>
+      </tbody>
+    </table></div>
+    <p class="pull">Design tool → token file → build step → CSS → components in Storybook → versioned package.</p>
+    <p>That's it. That is the pipeline every design system you admire is running. <strong>You own step 1 and step 3's rules.</strong> Week 3 and week 4 of this plan are exactly those two.</p>
+    <p>Read Martin Fowler's article below — it is free, it is the clearest thing written on this, and it is written for people who are not already fluent.</p>
+  </div>
+  <div class="src"><h4>Sources</h4><ul>
+    <li><a href="https://martinfowler.com/articles/design-token-based-ui-architecture.html">Design Token-Based UI Architecture</a> — martinfowler.com. Start here. Tokens as "fundamental design decisions represented as data".</li>
+    <li><a href="https://www.designtokens.org/tr/2025.10/">DTCG Format Module 2025.10</a> — the W3C community format. First stable version. Defines <code>$value</code>, <code>$type</code> and 13 token types. A reference, not a read-through.</li>
+    <li><a href="https://state-of-ai-in-design-systems.netlify.app/">State of AI in Design Systems</a> — Kaelig Deloumeau-Prigent, July 2026. An audit of 21 real public systems. Note: systems, not people — no survey data in it.</li>
+  </ul></div>
+</section>
+
+<section class="slide" data-k="s-eye">
+  <div class="body">
+    <div class="rail"><span class="marker">WHY YOU'RE NOT REPLACEABLE</span><span class="rule"></span></div>
+    <h2>Your eye becomes a file</h2>
+    <p>You wrote that what you love most — crafting beautiful screens — "feels like it's becoming less valued." Here is the honest version.</p>
+    <p><strong>Producing pixels did lose value. Deciding was never the pixels.</strong> The problem is that your deciding lived in your head and in Figma, where an agent cannot reach it. So it looked like it had disappeared.</p>
+    <div class="grid">
+      <div class="box"><h3>Taste → tokens</h3><p>Your palette, spacing and type scale as a file the agent is forbidden to deviate from.</p></div>
+      <div class="box"><h3>Structure → the spec</h3><p>Information design, but written for a machine that will build from it.</p></div>
+      <div class="box"><h3>Judgement → review</h3><p>AI makes ten options. Someone has to know which is right. That part does not transfer.</p></div>
+    </div>
+    <div class="quoteline"><p>The hard part of design is rarely generating the form.</p><cite>Karri Saarinen, CEO, Linear — AI in Design Report 2026</cite></div>
+    <p>You are not becoming a developer. You are putting your judgement somewhere an agent can reach it. That is a smaller change than it feels like, and it is the whole job.</p>
+  </div>
+  <div class="src"><h4>Sources</h4><ul>
+    <li><a href="https://stateofaidesign.com/chapters/craft">Craft in an age of infinite output</a> — 60–70% of respondents still rely on their own judgment for user needs, problem definition, storytelling and systems thinking.</li>
+  </ul></div>
+</section>
+
+<section class="slide" data-k="s-noise">
+  <div class="body">
+    <div class="rail"><span class="marker">YOUR LINKS, SORTED</span><span class="rule"></span></div>
+    <h2>What's useful, what's noise</h2>
+    <div class="asked">
+      <span class="who">You asked</span>
+      <p>"But is there something in the reels that could be interesting? Analyze them."</p>
+    </div>
+    <p><strong>I tried, and I can't.</strong> I fetched two of them properly and both returned nothing but the word "Instagram" — Instagram blocks reading without a login, so all I ever had was the URLs. I should have said that plainly the first time instead of calling them noise. That was a judgement about the format, not about the content, and you deserve the distinction.</p>
+    <p>If you want them read, two things work: screenshot the ones you actually remember and drop them in here, or tell me the creator handles and I'll find what they've published elsewhere. You already named one that's worth it — <strong>yeho.ux on agent experience design</strong>. That's a real lead and I can go find their writing.</p>
+    <p>What I <em>can</em> say about the format, without guessing at the content: twenty saved reels is not twenty lessons. It's one open loop, twenty times.</p>
+    <div class="grid">
+      <div class="box"><span class="flag f-go">Keep</span><h3>Futurice — spec-driven design</h3><p>The spine. Week 0.</p></div>
+      <div class="box"><span class="flag f-go">Keep</span><h3>AI in Design Report 2026</h3><p>Your evidence base. The thing to quote in interviews.</p></div>
+      <div class="box"><span class="flag f-go">Keep</span><h3>Martin Fowler on tokens</h3><p>Design systems in code. Week 3.</p></div>
+      <div class="box"><span class="flag f-go">Keep</span><h3>DS ARC + State of AI in DS</h3><p>Week 7, when you have docs to test.</p></div>
+      <div class="box"><span class="flag f-wait">Later</span><h3>AI &amp; Design Systems course</h3><p>Brad Frost, Southleft. Real and good. $995–1,495. Employer training budget, month 4.</p></div>
+      <div class="box"><span class="flag f-wait">Unread</span><h3>The Instagram links</h3><p>Login-walled. Send screenshots or handles and they move to Keep or Drop honestly.</p></div>
+    </div>
+  </div>
+  <div class="src"><h4>Sources</h4><ul>
+    <li><a href="https://courses.bradfrost.com/courses/ai-design-systems-course">AI &amp; Design Systems</a> — Brad Frost / TJ Pitre / Ian Frost. ~20 h of video, Slack community, certificate of completion. Price has moved; check before buying.</li>
+    <li class="note">Instagram fetch result, 23 Nov 2026: HTTP 200, body contained only the page title. Not readable without a signed-in session.</li>
+  </ul></div>
+</section>
+
+<section class="slide" data-k="s-inbox">
+  <div class="body">
+    <div class="rail"><span class="marker">THE ONE NEW HABIT</span><span class="rule"></span></div>
+    <h2>Friday, fifteen minutes</h2>
+    <div class="asked">
+      <span class="who">You asked</span>
+      <p>"How would that work?"</p>
+    </div>
+    <p>Concretely, like this.</p>
+    <p><strong>During the week</strong> — anything you find goes to one Notion page called <em>Links inbox</em>. Paste the link, nothing else. No tags, no folders, no summary. Don't save it on Instagram, don't bookmark it, don't leave the tab open. One place.</p>
+    <p><strong>Friday, last fifteen minutes</strong> — open the page and go down the list. Each link gets one of three fates, out loud:</p>
+    <div class="grid">
+      <div class="box"><h3>Used it</h3><p>It's already in your learning log or your repo. Delete the link.</p></div>
+      <div class="box"><h3>Using it next week</h3><p>Move it onto next week's line in your log, with the reason. Delete it from the inbox.</p></div>
+      <div class="box"><h3>Neither, two weeks running</h3><p>Delete it. No archive folder. If it mattered, it comes back.</p></div>
+    </div>
+    <p class="pull">Every link in that list is costing you attention every time you see it. Deleting is the work, not the failure.</p>
+    <p><strong>Why fifteen minutes and not thirty:</strong> you are not evaluating the links. You are closing loops. If a link needs real thought, that is next week's 1-hour Learn block, not Friday.</p>
+  </div>
+</section>
+
+<section class="slide" data-k="s-weeks">
+  <div class="body">
+    <div class="rail"><span class="marker">THE CURRICULUM</span><span class="rule"></span></div>
+    <h2>Eight weeks, and what each one costs</h2>
+    <div class="asked">
+      <span class="who">You asked</span>
+      <p>"In week 0 can I have an overview of each of these steps so I know what's coming? And how long would this take in total?"</p>
+    </div>
+    <div class="stat">
+      <div><b>~202h</b><span>total, across 9 weeks</span></div>
+      <div><b>25h</b><span>a normal week</span></div>
+      <div><b>2.5h</b><span>week 0, this week</span></div>
+      <div><b>5h</b><span>a normal day: 1 learn, 3 build, 1 show</span></div>
+    </div>
+    <div class="scroll"><table>
+      <thead><tr><th>Wk</th><th>Hrs</th><th>What you learn</th><th>What you build</th><th>Friday proof</th></tr></thead>
+      <tbody>
+        <tr><td class="w">0</td><td class="h">2.5</td><td>Setup + spec-driven design</td><td>Repo, Notion, move your context file in</td><td>A repo with your name on it</td></tr>
+        <tr><td class="w">1</td><td class="h">25</td><td><strong>Git &amp; GitHub</strong></td><td>product.md, decisions.md, a branch, a pull request</td><td>20+ commits, 1 merged PR</td></tr>
+        <tr><td class="w">2</td><td class="h">25</td><td><strong>Spec-driven design</strong></td><td>specs/001-daily-rhythm.md</td><td>The spec itself</td></tr>
+        <tr><td class="w">3</td><td class="h">25</td><td><strong>Design tokens / DTCG</strong></td><td>tokens.json, two tiers</td><td>Token file + why each colour</td></tr>
+        <tr><td class="w">4</td><td class="h">25</td><td><strong>Claude Code + agent rules</strong></td><td>AGENTS.md, components.md</td><td>An agent builds on-system</td></tr>
+        <tr><td class="w">5</td><td class="h">25</td><td><strong>MCP + agent skills</strong></td><td>Notion connector, one custom skill</td><td>A 2-minute demo video</td></tr>
+        <tr><td class="w">6</td><td class="h">25</td><td><strong>Deploying</strong></td><td>app/, GitHub Pages</td><td>A live URL</td></tr>
+        <tr><td class="w">7</td><td class="h">25</td><td><strong>AI-ready design systems</strong></td><td>llms.txt, DS ARC scan</td><td>Before/after score</td></tr>
+        <tr><td class="w">8</td><td class="h">25</td><td>Packaging it up</td><td>README as the story</td><td>Post + case study + badges</td></tr>
+      </tbody>
+    </table></div>
+    <p><strong>Mark each week off as you finish it.</strong></p>
+    <ul class="ticks" id="wk-list"></ul>
+    <div class="meter"><div class="track"><div class="fill" id="wk-fill"></div></div><div class="say" id="wk-say">—</div></div>
+    <p style="font-size:14px;color:var(--muted)">If a week slides, it slides. 202 hours over nine weeks is the plan; 202 hours over twelve is still 202 hours.</p>
+  </div>
+</section>
+
+<section class="slide" data-k="s-week0">
+  <div class="body">
+    <div class="rail"><span class="marker">THIS WEEK · 2.5 HOURS</span><span class="rule"></span></div>
+    <h2>Week 0, in one sitting</h2>
+    <p>Do it in one go — setup half-done is worse than not started. Every step is below with what it costs. If anything takes more than ten minutes longer than it says, stop and ask me.</p>
+    <ul class="ticks" id="w0-list"></ul>
+    <div class="meter"><div class="track"><div class="fill" id="w0-fill"></div></div><div class="say" id="w0-say">—</div></div>
+    <h3 style="margin-top:22px">The six words of git — that's the whole course</h3>
+    <div class="scroll"><table>
+      <thead><tr><th>Word</th><th>What it actually means</th></tr></thead>
+      <tbody>
+        <tr><td class="w">commit</td><td>Save a version, with a note about what you changed</td></tr>
+        <tr><td class="w">push</td><td>Send your saved versions up to GitHub</td></tr>
+        <tr><td class="w">branch</td><td>Try something without breaking the good version</td></tr>
+        <tr><td class="w">pull request</td><td>Propose that your branch becomes the real version</td></tr>
+        <tr><td class="w">merge</td><td>Accept it</td></tr>
+        <tr><td class="w">revert</td><td>Undo a commit you regret</td></tr>
+      </tbody>
+    </table></div>
+    <p class="pull" style="color:var(--go)">That's it. That is what you've been afraid of for a year.</p>
+  </div>
+  <div class="src"><h4>Links you'll need</h4><ul>
+    <li><a href="https://github.com/signup">github.com/signup</a> — the account. Username is public, pick one you'd put on a CV.</li>
+    <li><a href="https://desktop.github.com">desktop.github.com</a> — GitHub Desktop. No terminal, ever.</li>
+    <li><a href="https://academy.claude.com/">academy.claude.com</a> — free, personal account is fine, badges are free. Start with Claude 101 (13 lessons, 2.5 h).</li>
+    <li><a href="https://skills.github.com">skills.github.com</a> — free hands-on GitHub courses. "Introduction to GitHub" is under an hour.</li>
+    <li><a href="https://www.futurice.com/blog/spec-driven-design">The Futurice article</a> — read it with a coffee, then write three sentences in your log.</li>
+  </ul></div>
+</section>
+
+<section class="slide" data-k="s-week4">
+  <div class="body">
+    <div class="rail"><span class="marker">THE WEEK THAT MATTERS</span><span class="rule"></span></div>
+    <h2>Week 4: make the agent obey you</h2>
+    <p>You write <code>AGENTS.md</code> — the rules an agent must follow in your repo. Then you ask Claude to build a screen.</p>
+    <p class="pull" style="color:var(--go)">If it invents a colour, the system failed. Not Claude.</p>
+    <p>Tighten the rules. Try again. That loop — write rules, test, watch them break, tighten — is the single most valuable thing in these eight weeks, and most designers have never run it once.</p>
+    <p>It is also not a thing I made up. The audit of 21 public design systems found this exact pattern separating the leaders from everyone else, and gave it a name: <strong>structural coercion</strong> — redesigning the task so the model <em>cannot</em> go off-system. Shopify's Polaris skill tells the model outright that it cannot trust its own trained knowledge.</p>
+    <div class="grid">
+      <div class="box"><h3>What good looks like</h3><p>18 of 21 systems ship an agent skill. 18 ship an MCP server. 15 publish an llms.txt.</p></div>
+      <div class="box"><h3>What almost nobody does</h3><p>Only 3 of 21 use Figma Code Connect. The Figma-to-code link is <em>not</em> the solved part. There's room here.</p></div>
+    </div>
+    <p>At the end of this week you can say something your whole team can't: <em>"I know why the agent went off-system, and I know how to stop it."</em></p>
+  </div>
+  <div class="src"><h4>Sources</h4><ul>
+    <li><a href="https://state-of-ai-in-design-systems.netlify.app/">State of AI in Design Systems</a> — Kaelig Deloumeau-Prigent, data collected 26–28 July 2026. 21 systems, 200 AI affordances, 165 "coercion techniques" catalogued.</li>
+    <li class="note">Its own caveat: private monorepos mean "no public agent files" is not "no AI usage". Maturity ratings are the author's judgement.</li>
+  </ul></div>
+</section>
+
+<section class="slide" data-k="s-creds">
+  <div class="body">
+    <div class="rail"><span class="marker">CREDENTIALS</span><span class="rule"></span></div>
+    <h2>€0 to €90, and nothing more</h2>
+    <div class="grid">
+      <div class="box"><span class="flag f-go">Free</span><h3>Claude Academy badges</h3><p>Real badges: downloadable PDF, public verification link, add straight to LinkedIn. Personal account, no paid plan.</p><p>Order: Claude 101 → Claude Code 101 → Introduction to agent skills → Introduction to MCP. About 6 hours total.</p></div>
+      <div class="box"><span class="flag f-go">Free</span><h3>GitHub Skills</h3><p>Hands-on, no badge, fastest way in. Week 1.</p></div>
+      <div class="box"><span class="flag f-go">~$49–99</span><h3>GitHub Foundations</h3><p>No prerequisites. Credly badge. The one paid thing, and it targets exactly the gap you named. Book week 2, sit week 4.</p><p>Check the fee and whether it's proctored at checkout — published sources disagree.</p></div>
+    </div>
+    <h3 style="margin-top:20px">Two things to stop reading about</h3>
+    <ul>
+      <li><strong>Claude certification.</strong> Real, paid, proctored through Pearson VUE — and <em>only open to employees of companies in Anthropic's partner network</em>. Not available to you. The Academy badges above are a separate, free thing and they are the ones you can actually get.</li>
+      <li><strong>IxDF.</strong> Good platform, wrong spend right now. Revisit in six months if you want master-class certificates.</li>
+    </ul>
+    <p>Four verifiable badges plus one real certification, for under €90. That is a respectable line on a CV by the end of January.</p>
+  </div>
+  <div class="src"><h4>Sources</h4><ul>
+    <li><a href="https://academy.claude.com/">Claude Academy</a> — Anthropic's free learning site. Badges issued on passing every lesson quiz plus the final assessment. Confirmed 23 Nov 2026. The old anthropic.skilljar.com closes early December.</li>
+    <li><a href="https://learn.microsoft.com/credentials/certifications/github-foundations">GitHub Foundations</a> — official page. Audience includes "non-technical support, project managers, or program managers". No prerequisites.</li>
+    <li class="note">Claude certification eligibility: no official Anthropic page is publicly readable; the restriction is consistently reported across independent write-ups. Verify with Anthropic before spending anything.</li>
+  </ul></div>
+</section>
+
+<section class="slide" data-k="s-tokens">
+  <div class="body">
+    <div class="rail"><span class="marker">A SKILL, NOT A CHORE</span><span class="rule"></span></div>
+    <h2>Spending tokens like money</h2>
+    <div class="asked">
+      <span class="who">You asked</span>
+      <p>"Point at a file instead of pasting its contents — how to? Can you detect what I ask too much, so you can create a skill or something in CLAUDE.md that collects the stuff I'm asking too much?"</p>
+    </div>
+    <p><strong>Pointing at a file.</strong> Just name it. Type <code>docs/product.md</code> in your message — I read it myself. Or press <code>@</code> and pick it from the list. You never need to paste file contents; when you paste, the text goes through twice.</p>
+    <p><strong>Your repeat-questions idea — yes, and it's a good one.</strong> There are two places it can go, and the difference is worth knowing because it's exactly the kind of thing clients will ask you:</p>
+    <div class="grid">
+      <div class="box"><h3>CLAUDE.md</h3><p>Read <em>every</em> time, automatically. Cheap but always costs something. For short, always-true rules.</p></div>
+      <div class="box"><h3>A skill</h3><p>Only loaded when it's relevant. Costs nothing until needed. For longer, occasional knowledge.</p></div>
+    </div>
+    <p>So: <code>docs/faq.md</code> collects your recurring questions and my answers, and <code>CLAUDE.md</code> holds one line telling me to check it first. I'll add to it as you ask things. When it gets long, it becomes a skill.</p>
+    <h3 style="margin-top:20px">Where the budget actually goes</h3>
+    <div class="grid">
+      <div class="box"><h3>Here — worth it</h3><p>Specs. Tokens. Anything touching your repo. Code review. Decisions.</p></div>
+      <div class="box"><h3>Gemini / Copilot — cheap stuff</h3><p>Summarising articles. Explaining jargon. Quick syntax. First drafts of posts. Rewriting copy.</p></div>
+    </div>
+    <ul>
+      <li><strong>One topic per session</strong>, then <code>/clear</code>. A long session re-reads its whole history on every single message. This is the big one.</li>
+      <li><strong>Ask for the smallest answer first.</strong> "Just the file list" before "explain everything."</li>
+      <li><strong>Don't ask me to re-explain what's written down.</strong> Point me at the file, or go read it.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="slide" data-k="s-voices">
+  <div class="body">
+    <div class="rail"><span class="marker">THE ROOM YOU'RE JOINING</span><span class="rule"></span></div>
+    <h2>What they actually said</h2>
+    <p>Named practitioners, from the 2026 report. Not AI opinion — theirs.</p>
+    <div class="quoteline"><p>There are no excuses anymore for not being deeply involved in the final delivery process.</p><cite>Joel Lewenstein, Head of Product Design, Anthropic</cite></div>
+    <div class="quoteline"><p>All of our designers have submitted production PRs.</p><cite>Hannah Hudson, Head of Design, Watershed</cite></div>
+    <div class="quoteline"><p>Designers can directly fix code issues.</p><cite>David Stinnette, Director of Product Design, Samsara</cite></div>
+    <div class="quoteline"><p>AI is like a point-of-view amplifier.</p><cite>Ryan Mather, Designer, Anthropic</cite></div>
+    <div class="quoteline"><p>We want people to have radically divergent concepts.</p><cite>Mark Boyes-Smith, Head of AI Design, Miro</cite></div>
+    <p>And the one that should settle it, about who wins in this era — the people who "maintained the clearest point of view on what good actually is."</p>
+    <p class="pull">That is not a technical skill. That is yours already. It has been for ten years.</p>
+  </div>
+  <div class="src"><h4>Sources</h4><ul>
+    <li><a href="https://stateofaidesign.com/chapters/craft">AI in Design Report 2026, Craft chapter</a> — quotes collected March 2026. Last line is from a tweet by Daniel Bezos (@pixeldahn), quoted in the report.</li>
+  </ul></div>
+</section>
+
+<section class="slide" data-k="s-follow">
+  <div class="body">
+    <div class="rail"><span class="marker">WHO TO FOLLOW</span><span class="rule"></span></div>
+    <h2>Five people, and one honest let-down</h2>
+    <p>You named <strong>yeho.ux</strong> as the one creator who's genuinely useful to you. I found her. Bio: <em>"Human Judgment in the AI era. Asking 'Why' when the 'What' gets generative. Product Design Lead."</em> 2,487 followers.</p>
+    <p><strong>Her newsletter has no posts.</strong> The homepage shows a tagline and "Portfolio reviews opening soon." The archive 404s. She states no name and no company anywhere public. Her ideas exist only as reels — in the format that's keeping you up at night. There is nothing to read.</p>
+    <p>But look at that bio again. <em>Human judgment in the AI era.</em> That is your thesis, almost word for word — it's what your own product.md has been circling since you wrote it. You didn't like her for her tips. You liked her because she'd named the thing you already believed.</p>
+    <p class="pull" style="color:var(--go)">Other people are writing that idea down properly.</p>
+    <div class="grid">
+      <div class="box"><span class="flag f-go">Start here</span><h3>Marie-Claire Dean</h3><p><em>Delegative UX: designing the agent experience</em>, 24 Sep 2026. The best single piece on this. Concrete design guidance you could work from tomorrow.</p></div>
+      <div class="box"><h3>Dr. Carmen Martinez</h3><p><em>Agentic UX &amp; Conversation Design</em>. The closest thing to a curriculum, written for designers making exactly your transition. 1,000+ subscribers.</p></div>
+      <div class="box"><h3>Pritam Roy</h3><p><em>Agent-First Web</em>. For one clarification: <strong>AX</strong> is how an agent handles your site. <strong>AXD</strong> is a person's experience of supervising one. AXD is your field.</p></div>
+      <div class="box"><h3>Mathias Biilmann</h3><p>Netlify's CEO, who argued Agent Experience will matter as much as UX. Read his original essay, not the summaries.</p></div>
+      <div class="box"><span class="flag f-wait">Vendor</span><h3>agentexperiences.com</h3><p>Good definitions, but it's PrimeCo's site and it sells "AXO audits". Read the guides, discount the urgency.</p></div>
+    </div>
+    <h3>Dean's guidance, which is a design brief in disguise</h3>
+    <div class="quoteline"><p>Delegative UX is what lets a person see, track and understand work being done in their name, by an agent.</p><cite>Marie-Claire Dean, 24 Sep 2026</cite></div>
+    <ul>
+      <li>Show what the agent is doing <strong>now</strong>, and where.</li>
+      <li>Explain <strong>why</strong> it chose what it chose, what it assumed, what it decided against.</li>
+      <li>Be generous with visibility at first — "the work, the reasoning and the near-misses" — then reduce it as trust builds, task by task.</li>
+      <li>Design for the people <strong>affected</strong> by an agent's actions who didn't delegate it.</li>
+      <li>Put consequential actions behind a gate. Label each reversible or not.</li>
+    </ul>
+    <p>Read that list, then read your own <code>AGENTS.md</code>. Same discipline, smaller scale. <strong>Pick one — Dean's post, this week, in a Learn block.</strong> Not all five. Five becomes none; that's the whole problem this plan solves.</p>
+  </div>
+  <div class="src"><h4>Sources</h4><ul>
+    <li><a href="https://marieclairedean.substack.com/p/delegative-ux-designing-the-agent">Delegative UX: designing the agent experience</a> — MC Dean, 24 Sep 2026. Role and employer not stated publicly.</li>
+    <li><a href="https://drcarmenmartinez.substack.com/">Agentic UX &amp; Conversation Design</a> — Dr. Carmen Martinez. Method built in public; some posts paid.</li>
+    <li><a href="https://pritamr.substack.com/p/ax-vs-ux">AX vs UX: Agent Experience vs User Experience</a> — Pritam Roy, Oct 2026.</li>
+    <li><a href="https://yeho-ux.beehiiv.com/">yeho-ux.beehiiv.com</a> — checked 23 Nov 2026: no posts, archive returns 404.</li>
+    <li class="note">Full list with notes: <code>docs/who-to-follow.md</code> in your repo.</li>
+  </ul></div>
+</section>
+
+<section class="slide" data-k="s-done">
+  <div class="body">
+    <div class="rail"><span class="marker">HOW YOU'LL KNOW</span><span class="rule"></span></div>
+    <h2>What done looks like</h2>
+    <ul>
+      <li><strong>End of week 2</strong> — a stranger could build from your spec without asking you a single question.</li>
+      <li><strong>End of week 4</strong> — an agent builds a screen using only your tokens. And you hold a GitHub certification.</li>
+      <li><strong>End of week 6</strong> — a URL exists that you can send to someone.</li>
+      <li><strong>End of week 8</strong> — a public repo, a published post, four badges, and a sentence you can say in a room:</li>
+    </ul>
+    <p class="pull" style="color:var(--go);margin-top:18px">"I write the spec and the design system. The agent builds. I judge the result."</p>
+    <p>Then the quiet one, which matters more: the saved-reels pile is gone, and one small real thing exists that didn't before.</p>
+    <p style="margin-top:22px">Three things for Monday morning, nothing else:</p>
+    <ol style="max-width:64ch">
+      <li>GitHub account and GitHub Desktop.</li>
+      <li>A repo called <code>mamai</code>, with your files committed into it.</li>
+      <li>Read the Futurice article. Write three sentences about it.</li>
+    </ol>
+    <p>Two hours. Everything else in here waits until that's done.</p>
+  </div>
+</section>
+
+</div>
+
+<div class="bar">
+  <button id="prev">← Back</button>
+  <span class="count" id="count"></span>
+  <button id="next" class="go">Next →</button>
+  <div class="dots" id="dots"></div>
+  <button id="theme" title="Light or dark" aria-label="Toggle light and dark">◐</button>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var W0 = [
+    ["w0-gh","Make a GitHub account at github.com/signup","10 min"],
+    ["w0-desktop","Install GitHub Desktop — no terminal, ever","10 min"],
+    ["w0-repo","Create a public repo called <code>mamai</code>, tick “Add a README”","10 min"],
+    ["w0-clone","Clone it to your computer with GitHub Desktop","5 min"],
+    ["w0-move","Copy your project files in, commit, push, then look at it on github.com","20 min"],
+    ["w0-notion","Notion: one page <em>My new role</em>, four sub-pages — Learning log, Links inbox, MamAI canvas, Life","20 min"],
+    ["w0-unsave","Unsave your Instagram saves. All of them. This is part of the setup.","15 min"],
+    ["w0-academy","Sign up at academy.claude.com and start Claude 101","10 min"],
+    ["w0-read","Read the Futurice article, then write three sentences in your log","40 min"]
+  ];
+  var WK = [
+    ["wk-1","Week 1 — Git &amp; GitHub"],["wk-2","Week 2 — Spec-driven design"],
+    ["wk-3","Week 3 — Design tokens"],["wk-4","Week 4 — Agent rules"],
+    ["wk-5","Week 5 — MCP &amp; skills"],["wk-6","Week 6 — Deploying"],
+    ["wk-7","Week 7 — AI-ready design systems"],["wk-8","Week 8 — Packaging it up"]
+  ];
+
+  var slides = [].slice.call(document.querySelectorAll('.slide'));
+  var i = 0, db = null, canWrite = true;
+  var notesVal = {}, progress = {}, timers = {}, queue = {};
+
+  function buildTicks(el, rows, withMins){
+    if(!el) return;
+    el.innerHTML = rows.map(function(r){
+      return '<li><label class="tick"><input type="checkbox" id="chk-'+r[0]+'" data-id="'+r[0]+'">' +
+        '<span>'+r[1]+(withMins&&r[2]?'<span class="mins">'+r[2]+'</span>':'')+'</span></label></li>';
+    }).join('');
+  }
+  buildTicks(document.getElementById('w0-list'), W0, true);
+  buildTicks(document.getElementById('wk-list'), WK, false);
+
+  slides.forEach(function(s){
+    var k = s.dataset.k;
+    var d = document.createElement('div');
+    d.className = 'notes';
+    d.innerHTML = '<label for="ta-'+k+'">My notes — ask me anything in here</label>' +
+      '<textarea id="ta-'+k+'" data-k="'+k+'" placeholder="What does this mean for me? What am I unsure about?"></textarea>' +
+      '<div class="state" id="st-'+k+'"></div>';
+    s.appendChild(d);
+  });
+
+  var dots = document.getElementById('dots');
+  slides.forEach(function(s, n){
+    var b = document.createElement('button');
+    b.className = 'dot'; b.type = 'button';
+    b.setAttribute('aria-label', 'Slide ' + (n + 1));
+    b.addEventListener('click', function(){ go(n); });
+    dots.appendChild(b);
+  });
+
+  function paintDots(){
+    [].forEach.call(dots.children, function(d, n){
+      var k = slides[n].dataset.k;
+      d.className = 'dot' + (n === i ? ' on' : ((notesVal[k] || '').trim() ? ' has' : ''));
+    });
+  }
+  function go(n){
+    i = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach(function(s, k){ s.classList.toggle('on', k === i); });
+    document.getElementById('count').textContent = (i + 1) + ' / ' + slides.length;
+    document.getElementById('prev').disabled = i === 0;
+    document.getElementById('next').disabled = i === slides.length - 1;
+    paintDots();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  document.getElementById('next').addEventListener('click', function(){ go(i + 1); });
+  document.getElementById('prev').addEventListener('click', function(){ go(i - 1); });
+  document.addEventListener('keydown', function(e){
+    if (e.target && (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT')) return;
+    if (e.key === 'ArrowRight') { e.preventDefault(); go(i + 1); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); go(i - 1); }
+  });
+
+  var tb = document.getElementById('theme');
+  try { var t0 = localStorage.getItem('mnr-theme'); if (t0) document.documentElement.setAttribute('data-theme', t0); } catch (e) {}
+  tb.addEventListener('click', function(){
+    var cur = document.documentElement.getAttribute('data-theme');
+    var nxt = cur === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', nxt);
+    try { localStorage.setItem('mnr-theme', nxt); } catch (e) {}
+  });
+
+  function meter(listId, fillId, sayId, rows, words){
+    var done = rows.filter(function(r){ return progress[r[0]]; }).length;
+    var pct = rows.length ? Math.round(done / rows.length * 100) : 0;
+    var f = document.getElementById(fillId); if (f) f.style.width = pct + '%';
+    var s = document.getElementById(sayId);
+    if (s) s.innerHTML = done === 0 ? words[0]
+      : (done === rows.length ? '<b>All ' + rows.length + ' done.</b> ' + words[2]
+        : '<b>' + done + ' of ' + rows.length + '</b> done. ' + words[1]);
+  }
+  function paintProgress(){
+    [].forEach.call(document.querySelectorAll('.tick input'), function(el){
+      el.checked = !!progress[el.dataset.id];
+    });
+    meter('w0-list','w0-fill','w0-say', W0, ['Nothing ticked yet. Start at the top.','Keep going.','Week 0 is finished. Week 1 starts Monday.']);
+    meter('wk-list','wk-fill','wk-say', WK, ['Week 0 first.','You are doing the thing.','Eight weeks. You did it.']);
+  }
+  paintProgress();
+
+  function write(coll, id, body, stateEl){
+    if (!db || !canWrite) return;
+    var key = coll + '/' + id;
+    var run = function(){
+      return db.collection(coll).doc(id).set(body).then(function(){
+        if (stateEl) stateEl.textContent = 'Saved';
+      }).catch(function(err){
+        var c = err && err.code;
+        if (c === 'invalid_argument' || c === 'not_granted' || c === 'revoked' ||
+            c === 'capability_disabled' || c === 'capability_removed') { canWrite = false; }
+        if (stateEl) stateEl.textContent = 'Not saved — ' + (c || 'error');
+      });
+    };
+    queue[key] = (queue[key] || Promise.resolve()).then(run, run);
+  }
+
+  document.addEventListener('change', function(e){
+    var el = e.target;
+    if (!el.matches || !el.matches('.tick input')) return;
+    var id = el.dataset.id;
+    progress[id] = el.checked;
+    paintProgress();
+    write('progress', id, { done: el.checked });
+  });
+
+  [].forEach.call(document.querySelectorAll('.notes textarea'), function(ta){
+    var k = ta.dataset.k, st = document.getElementById('st-' + k);
+    ta.addEventListener('input', function(){
+      notesVal[k] = ta.value;
+      paintDots();
+      st.textContent = db && canWrite ? 'Saving…' : 'Not connected — copy this out before you close';
+      clearTimeout(timers[k]);
+      timers[k] = setTimeout(function(){ write('notes', k, { text: ta.value }); }, 900);
+    });
+  });
+
+  function offline(msg){
+    [].forEach.call(document.querySelectorAll('.notes .state'), function(s){ s.textContent = msg; });
+  }
+
+  (async function(){
+    try {
+      db = await claude.use('db');
+      await claude.use('user');
+    } catch (e) { db = null; }
+    if (!db) { offline('Notes are not saving here — open the published page to save them'); return; }
+
+    var landed = false;
+    var late = setTimeout(function(){
+      if (!landed) offline('Still reaching your saved notes…');
+    }, 10000);
+
+    db.collection('notes').onSnapshot(function(snap){
+      if (!snap.metadata.fromCache) { landed = true; clearTimeout(late); }
+      snap.docs.forEach(function(d){
+        var v = (d.data() || {}).text || '';
+        notesVal[d.id] = v;
+        var ta = document.getElementById('ta-' + d.id);
+        if (ta && document.activeElement !== ta && ta.value !== v) {
+          ta.value = v;
+          var st = document.getElementById('st-' + d.id);
+          if (st && v) st.textContent = 'Saved';
+        }
+      });
+      paintDots();
+    }, function(err){
+      landed = true; clearTimeout(late);
+      offline('Notes unavailable (' + (err && err.code) + ') — copy anything important out');
+    });
+
+    db.collection('progress').onSnapshot(function(snap){
+      snap.docs.forEach(function(d){ progress[d.id] = !!(d.data() || {}).done; });
+      paintProgress();
+    }, function(){ /* ticks keep working in the page */ });
+  })();
+
+  go(0);
+})();
+</script>

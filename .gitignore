@@ -1,0 +1,21 @@
+# macOS
+.DS_Store
+.AppleDouble
+
+# secrets — never commit these
+.env
+.env.*
+*.pem
+*.key
+
+# dependencies and build output
+node_modules/
+dist/
+build/
+.cache/
+
+# local Claude settings (may hold machine-specific paths)
+.claude/settings.local.json
+
+# logs
+*.log
