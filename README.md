@@ -1,10 +1,11 @@
-# MamAI
+# MamAI Design System
 
-A small tool for a new mother whose days never repeat — built by a product
-designer learning to work the way product teams are starting to work: specs and
-design systems kept as files, agents building from them, a human judging the result.
+An AI-ready design system for **MamAI** — a small tool for a parent whose days
+never repeat — built by a product designer learning to work the way product teams
+are starting to work: specs and design tokens kept as files, agents building from
+them, a human judging the result.
 
-**Status:** week 0. Nothing is built yet.
+**Status:** week 0. The method is in place; nothing is built yet.
 
 ## Why this repo looks like this
 
