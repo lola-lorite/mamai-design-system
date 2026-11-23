@@ -19,7 +19,7 @@ a tagline — "Human judgment in the age of AI | Product Design Lead" — and a 
 saying "Portfolio reviews opening soon." The archive page returns a 404. She states
 no real name and no company anywhere public.
 
-So her ideas exist only as reels, in the format that's keeping you up at night.
+So her ideas exist only as reels — the format this whole filter exists to resist.
 There is nothing to read.
 
 **Why she resonated anyway:** look at that bio again. *Human judgment in the AI

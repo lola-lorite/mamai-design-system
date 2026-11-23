@@ -10,22 +10,34 @@ You can also tick these off in the presentation, where the progress is saved:
 
 ---
 
-## 1. GitHub — 35 min
+## 1. GitHub — DONE already ✅
 
-- [ ] **10 min** — Account at <https://github.com/signup>. Your username is public;
-      pick one you'd put on a CV.
-- [ ] **10 min** — Install GitHub Desktop: <https://desktop.github.com>.
-      You will not touch a terminal for this, now or later.
-- [ ] **10 min** — New repository called `mamai`. **Public.** Tick "Add a README".
-- [ ] **5 min** — In GitHub Desktop: clone it to your computer.
+Checked on your machine, 23 Nov 2026:
 
-## 2. Move this project in — 20 min
+- [x] Git is installed (2.39.3) and configured as `contactlolalorite-rgb`
+- [x] GitHub Desktop is installed and has been opened before
+- [x] Your git identity is set, so every commit will have your name on it
 
-- [ ] Copy everything in this folder into your cloned `mamai` folder.
-- [ ] In GitHub Desktop, type "first commit — product, agent rules, week 0" and
-      press Commit.
-- [ ] Press Push.
-- [ ] Open github.com and look at it. **That page is the proof that this started.**
+If GitHub Desktop asks you to sign in when you open it, do that — it's the only
+part of this step left.
+
+## 2. Move this project in — DONE already ✅
+
+- [x] This folder is now a git repository on branch `main`
+- [x] Two commits exist. Your personal context was split out of `product.md`
+      into `PRIVATE-why.md`, which is gitignored and will never be published
+- [x] 13 files are ready to go public; `PRIVATE-why.md` and
+      `plan-presentation.html` are deliberately excluded
+
+**What's left — four clicks in GitHub Desktop:**
+
+1. Open GitHub Desktop → `File` → `Add Local Repository`
+2. Choose this folder: `~/Documents/Claude/Projects/my-new-role`
+3. Click the blue **Publish repository** button at the top
+4. In the dialog: change **Name** to `mamai`, and **untick** "Keep this code
+   private". Then Publish.
+
+Then open github.com and look at it. **That page is the proof that this started.**
 
 ## 3. Notion — 20 min
 
