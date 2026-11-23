@@ -93,3 +93,12 @@ means Claude can read the notes directly.
 **Rule:** type notes on the published page, not in the local file preview.
 
 ---
+
+## 2026-11-23 — the repo is public
+
+`github.com/lola-lorite/mamai-design-system`, six commits, 16 files.
+
+GitHub had created its own one-line README when the repo was made, so the two
+histories didn't match and the push was rejected. Joined them with a merge
+commit, keeping the fuller README written here. Worth knowing: a repo created
+with "Add a README" ticked always needs this. Create them empty next time.

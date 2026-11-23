@@ -21,23 +21,17 @@ Checked on your machine, 23 Nov 2026:
 If GitHub Desktop asks you to sign in when you open it, do that — it's the only
 part of this step left.
 
-## 2. Move this project in — DONE already ✅
+## 2. Move this project in — DONE ✅
 
-- [x] This folder is now a git repository on branch `main`
-- [x] Two commits exist. Your personal context was split out of `product.md`
-      into `PRIVATE-why.md`, which is gitignored and will never be published
-- [x] 13 files are ready to go public; `PRIVATE-why.md` and
-      `plan-presentation.html` are deliberately excluded
+Live at <https://github.com/lola-lorite/mamai-design-system>, 23 Nov 2026.
 
-**What's left — four clicks in GitHub Desktop:**
+- [x] This folder is a git repository on branch `main`
+- [x] Six commits pushed, with your name on every one
+- [x] 16 files are public. `PRIVATE-why.md`, `plan-presentation.html` and
+      `NOTION-STARTER.md` stayed on your laptop — checked after the push
+- [x] Paste that link at the top of your Notion page
 
-1. Open GitHub Desktop → `File` → `Add Local Repository`
-2. Choose this folder: `~/Documents/Claude/Projects/my-new-role`
-3. Click the blue **Publish repository** button at the top
-4. In the dialog: change **Name** to `mamai`, and **untick** "Keep this code
-   private". Then Publish.
-
-Then open github.com and look at it. **That page is the proof that this started.**
+**That page is the proof that this started.** Go and look at it.
 
 ## 3. Notion — 20 min
 
