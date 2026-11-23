@@ -19,3 +19,7 @@ build/
 
 # logs
 *.log
+
+# personal — this repo is public; these are not product
+PRIVATE-why.md
+plan-presentation.html

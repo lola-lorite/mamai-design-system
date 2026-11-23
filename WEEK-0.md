@@ -76,7 +76,7 @@ Then stop. Week 1 starts Monday.
 | merge | Accept it |
 | revert | Undo a commit you regret |
 
-That is it. That's what you've been afraid of for a year.
+That is it. Six words, and the rest is practice.
 
 ---
 
